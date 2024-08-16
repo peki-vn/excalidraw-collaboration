@@ -15,9 +15,24 @@ services:
       
   storage:
     image: alswl/excalidraw-storage-backend:v2023.11.11
-    restart: always
-    environment: # docs https://github.com/alswl/excalidraw-storage-backend#environement-variables
-      - PORT=8081
+    restart: unless-stopped
+    environment:
+      - STORAGE_URI=mongodb://${DB_USER}:${DB_PASS}@mongodb:27017
 
   room:
     image: excalidraw/excalidraw-room:sha-49bf529
+    restart: unless-stopped
+
+
+  mongodb:
+    image: mongo:7.0.5-jammy
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASS}
+    volumes:
+      - excalidraw-mongodb:/data/db
+    user: "1000"
+    
+volumes:
+  excalidraw-mongodb:
