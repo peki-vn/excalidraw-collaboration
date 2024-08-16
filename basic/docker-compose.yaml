@@ -12,6 +12,8 @@ services:
       # forked excalidraw can use env https://github.com/alswl/excalidraw/pull/5
       - VITE_APP_HTTP_STORAGE_BACKEND_URL=http://storage:8081/api/v2
       - VITE_APP_STORAGE_BACKEND=http
+    healthcheck:
+      test: "curl -sf http://localhost"
       
   storage:
     image: alswl/excalidraw-storage-backend:v2023.11.11
